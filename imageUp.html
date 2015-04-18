@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>画像アップテスト</title>
+<script type="text/javascript" src="jquery-2.0.3.min.js"></script>
+<style>
+	.output {
+		height: 100px;
+		width: 100px
+	}
+	.output img{
+		height: 100px;
+		width: 100px;
+	}
+</style>
+</head>
+<body>
+<!-- 画像を送信するためのフォーム -->
+<form enctype="multipart/form-data" action="imageUp.php" method="post">
+	<!-- アップロード画像選択領域(アップロードできるのは画像のみ) -->
+	<p><input type="file" name="imageFile" class="imageFile" accept="image/png, image/jpg, image/jpeg, image/gif"></p>
+
+	<!-- アップロードした画像を表示する領域 -->
+	<div class="outputarea">
+		<img src="" class="imageArea">
+	</div>
+
+	<!-- アップロード画像を送信するボタン -->
+	<p><input type="submit" value="送信"></p>
+</form>
+
+
+
+<script type="text/javascript">
+$(function() {
+
+// アップロードするファイルを選択
+$('.imageFile').change(function() {
+	// 属性名を取得する
+	var file = $(this).prop('files')[0];
+
+	if (file.type == 'image/png' || file.type == 'image/jpg' || file.type == 'image/jpeg' || file.type == 'image/gif') {
+
+		// 画像表示するオブジェクトを作る
+		var reader = new FileReader();
+		// ファイルを読み込んだとき画像のsrc属性を入力する
+		reader.onload = function() {
+			// 画像を表示する
+			var img_src = $('.imageArea').attr('src', reader.result);
+		}
+		// fileのURLを読み込む
+		reader.readAsDataURL(file);
+
+	} else {
+
+		$('.outputarea').html('これは画像ではありません<br>ページを再読み込みして画像を選択してください');
+		// 関数の処理を終了する
+		//return;
+
+	}
+
+
+
+	// // 画像以外は処理を停止
+	// if (!file.type.match('image.*')) {
+	// 	// 画像を表示するエリアに注意書きを表示する
+	// 	$('.outputarea').html('ページを再読み込みして画像を選択してください');
+	// 	// 関数の処理を終了する
+	// 	return;
+	// }
+
+	// // 画像表示するオブジェクトを作る
+	// var reader = new FileReader();
+	// // ファイルを読み込んだとき画像のsrc属性を入力する
+	// reader.onload = function() {
+	// 	// 画像を表示する
+	// 	var img_src = $('.imageArea').attr('src', reader.result);
+	// }
+	// // fileのURLを読み込む
+	// reader.readAsDataURL(file);
+});
+
+});
+</script>
+
+</body>
+</html>
