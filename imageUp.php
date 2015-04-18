@@ -7,29 +7,37 @@ if (!isset($_FILES['imageFile']['tmp_name'])) {
 	echo 'ファイルがありません';
 	exit;					// プログラムを終了する
 }
-
+// アップロードされたファイルの情報を変数に入れる
 $file_temp = $_FILES['imageFile']['tmp_name'];	// アップロードされたファイルが一時的に保存されたファイルパス
 $file_name = $_FILES['imageFile']['name'];		// アップロードファイル名
 $file_type = $_FILES['imageFile']['type'];		// MIMEタイプ
 $file_size = $_FILES['imageFile']['size'];		// ファイルのサイズ(大きさ)
 
-// ファイルをアップロードするディレクトリ
-//$temp_directory = "c:/xampp/htdocs/webkaihatsu/webAppTextPattern2/"; 
+// アップロードされたのが画像でなかったら画像をアップロードしない
+if ($file_type == 'image/jpeg' || $file_type == 'image/png' ||$file_type == 'image/gif') {
 
-// 本番環境でアップロードする場合
-//$temp_directory = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/flowerImage/'; 
+	// ファイルをアップロードするディレクトリ
+	//$temp_directory = "c:/xampp/htdocs/webkaihatsu/webAppTextPattern2/"; 
 
-// ローカルでアップロードする場合(保存先のファイルを設定する)
-$temp_directory = "c:/xampp/htdocs/dokusyuPHP/imageUp/flowerImage/"; 
+	// 本番環境でアップロードする場合
+	//$temp_directory = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/flowerImage/'; 
 
-// ファイルがアップロードできているかを調べる
-if (is_uploaded_file($file_temp)) {
-	// ファイルがアップロードできるかを調べ、可能ならアップロードする
-	if (move_uploaded_file($file_temp, $temp_directory . $file_name)) {
-		echo 'アップロードに成功しました';
-	} else {
-		// アップロードできなかったときのエラー処理を表示する
-		echo "ファイルをアップロードできませんでした<br>";
+	// ローカルでアップロードする場合(保存先のファイルを設定する)
+	$temp_directory = "c:/xampp/htdocs/dokusyuPHP/imageUp/flowerImage/"; 
+
+	// ファイルがアップロードできているかを調べる
+	if (is_uploaded_file($file_temp)) {
+		// ファイルがアップロードできるかを調べ、可能ならアップロードする
+		if (move_uploaded_file($file_temp, $temp_directory . $file_name)) {
+			echo 'アップロードに成功しました';
+	
+		} else {
+			// アップロードできなかったときのエラー処理を表示する
+			echo "ファイルをアップロードできませんでした<br>";
+
+		}
 	}
+} else {
+	echo '画像でないものが送信されました。<input type="button" onClick="history.back()" value="戻る">';
+	exit;
 }
-
